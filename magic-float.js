@@ -1,35 +1,26 @@
 /**
  * Created by dmitry on 2/24/15.
  */
-var c = new fabric.CanvasWithViewport("myCanvas", {isDrawingMode: true});
-c.isGrabMode = true;
+c.selection = false;
+var objectsCollection = [];
+var objAssistant = new ObjAssistant(c);
+var storage
+
+
+
 function onload() {
-	/*
-	fabric.Image.fromURL('https://nartstudios.files.wordpress.com/2012/04/brick-block1.jpg', function(img) {
-		img.scale(0.1).set({
-			left: 100,
-			top: 100
-		});
-		canvas.add(img);
-	});
-	*/
-	var rect = new fabric.Rect({
-		left: 100,
-		top: 100,
-		fill: 'red',
-		width: 20,
-		height: 20
+
+	c.on('mouse:move', function (e) {
+		objAssistant.onMouseMove(e);
 	});
 
-// "add" rectangle onto canvas
-	c.add(rect);
-	var gridDrawer = new GridDrawer(c);
-	gridDrawer.draw();
 
-	c.on('after:render', function () {
-		gridDrawer.draw();
-
+	c.on('mouse:up', function(e) {
+		var i = 0;
 	});
+
+
+
 	/*
 
 	canvas.on('mouse:over', function(e) {
@@ -65,6 +56,44 @@ function onload() {
 };
 
 
+function ObjAssistant(c)  {
+	var currentObject = null;
+	var lastX = null;
+	var lastY = null;
+
+	this.onMouseMove = function (e) {
+		if (!currentObject)
+			currentObject = createCurrentObject(123);
+
+		var x = gridHelper.round(e.e.clientX-25);
+		var y = gridHelper.round(e.e.clientY-25);
+
+		if (x != lastX || y != lastY) {
+			currentObject.set('left',gridHelper.round(e.e.clientX-25));
+			currentObject.set('top', gridHelper.round(e.e.clientY-25));
+			currentObject.setCoords();
+			c.renderAll();
+		}
+    };
+
+	function createCurrentObject(type) {
+		var obj = new fabric.Rect({
+			id: 'shadowObj',
+			left: 0,
+			top: 0,
+			fill: 'green',
+			opacity: 0.5,
+			width: 50,
+			height: 50,
+			selectable:false
+		});
+		c.add(obj);
+		return obj;
+	}
+}
+
+
+
 function Rectangle(x, y, width, height) {
 	this.left = x;
 	this.right = x + width;;
@@ -73,27 +102,22 @@ function Rectangle(x, y, width, height) {
 }
 
 
-function GridDrawer(c) {
-	var gridsize = 50;
-	this.draw = function() {
+$(function() {
+	$(document).on('mousewheel', function(event) {
+		c.setZoom(c.getZoom()*(1 - 0.05*event.deltaY));
+	});
 
-		var viewport = c.viewport;
-		var zoom = viewport.zoom;
-		var context = c.getContext("2d");
-
-		var clientRect = new Rectangle(viewport.translate().x,  viewport.translate().y, c.getWidth() / zoom, c.getHeight() / zoom);
-		console.log(clientRect );
-		for (var x = clientRect.left; x < clientRect.right; x += gridsize) {
-			context.moveTo(x, clientRect.top);
-			context.lineTo(x, clientRect.bottom);
+	$(document).on('keydown', function(event) {
+		if (event.keyCode == 32) {
+			c.isGrabMode = true;
+			$(document.body).css( 'cursor', 'move' ); // todo: не работает
 		}
+	});
 
-		for (var y = clientRect.top; y < clientRect.bottom; y += gridsize) {
-			context.moveTo(clientRect.left, y);
-			context.lineTo(clientRect.right, y);
+	$(document).on('keyup', function(event) {
+		if (event.keyCode == 32) {
+			c.isGrabMode = false;
+			$(document.body).css( 'cursor', 'crosshair' );
 		}
-
-		context.strokeStyle = "#ddd";
-		context.stroke();
-	}
-}
+	});
+});

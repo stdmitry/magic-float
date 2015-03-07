@@ -188,6 +188,8 @@
       return this.renderAll();
     };
 
+
+
     CanvasWithViewport.prototype._onMouseMoveInGrabMode = function(e) {
       if (this._isCurrentlyGrabbing) {
         this.viewport.grab(e);
@@ -211,11 +213,9 @@
     };
 
     CanvasWithViewport.prototype._draw = function(ctx, object) {
-      ctx.save();
-      ctx.scale(this.viewport.zoom, this.viewport.zoom);
-      ctx.translate(this.viewport.translate().x, this.viewport.translate().y);
-      CanvasWithViewport.__super__._draw.apply(this, arguments);
-      return ctx.restore();
+		this.beginDraw(ctx);
+      	CanvasWithViewport.__super__._draw.apply(this, arguments);
+		this.endDraw(ctx);
     };
 
     CanvasWithViewport.prototype._drawSelection = function() {
@@ -251,6 +251,8 @@
       }
       return CanvasWithViewport.__super__.__onMouseUp.call(this, this.viewport.transform(e));
     };
+
+
 
     return CanvasWithViewport;
 
