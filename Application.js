@@ -12,6 +12,7 @@ var Application = new function () {
 		this.setupEventListen();
 		StorageMan.load();
 		App.controller = new The2DController(App.canvas);
+        App.controller.init();
 		App.canvas.renderAll();
 	};
 

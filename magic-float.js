@@ -56,50 +56,8 @@ function onload() {
 };
 
 
-function ObjAssistant(c)  {
-	var currentObject = null;
-	var lastX = null;
-	var lastY = null;
-
-	this.onMouseMove = function (e) {
-		if (!currentObject)
-			currentObject = createCurrentObject(123);
-
-		var x = gridHelper.round(e.e.clientX-25);
-		var y = gridHelper.round(e.e.clientY-25);
-
-		if (x != lastX || y != lastY) {
-			currentObject.set('left',gridHelper.round(e.e.clientX-25));
-			currentObject.set('top', gridHelper.round(e.e.clientY-25));
-			currentObject.setCoords();
-			c.renderAll();
-		}
-    };
-
-	function createCurrentObject(type) {
-		var obj = new fabric.Rect({
-			id: 'shadowObj',
-			left: 0,
-			top: 0,
-			fill: 'green',
-			opacity: 0.5,
-			width: 50,
-			height: 50,
-			selectable:false
-		});
-		c.add(obj);
-		return obj;
-	}
-}
 
 
-
-function Rectangle(x, y, width, height) {
-	this.left = x;
-	this.right = x + width;;
-	this.top = y;
-	this.bottom = y + height;
-}
 
 
 $(function() {
