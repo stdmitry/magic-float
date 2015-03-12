@@ -1,19 +1,13 @@
 /**
  * Created by dmitry on 3/6/15.
  */
-var Item = function (x,y) {
-	this.x = x;
+var Item = function (x,y, type) {
+	this.type = type || 'block';
+    this.x = x;
 	this.y = y;
 
 
-	this.canvasObj = new fabric.Rect({
-		left: x,
-		top: y,
-		fill: 'blue',
-		width: 50,
-		height: 50,
-		selectable: false
-	});
+
 };
 
 Item.prototype.setCoords = function(x, y) {
@@ -21,6 +15,10 @@ Item.prototype.setCoords = function(x, y) {
 	this.canvasObj.set('top', y);
 };
 
-Item.prototype.draw = function (canvas) {
-	canvas.add(this.canvasObj);
+Item.prototype.keyId = function () {
+    return this.x + '_'+this.y + '_' + this.type;
+};
+
+Item.create = function(obj) {
+    return new Item(obj.x, obj.y, obj.type)
 };
