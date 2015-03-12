@@ -3,21 +3,23 @@
  */
 var CursorDrawer = function(canvas, model) {
     var currentObject = null;
-    var lastX = null;
-    var lastY = null;
+    this.lastPos = {x:null, y:null};
+	this.lastY = null;
 
     this.onMouseMove = function (e) {
         if (!currentObject)
             currentObject = createCursor(123);
 
-        var x = GridHelper.round(e.e.clientX-25);
-        var y = GridHelper.round(e.e.clientY-25);
+        var pointer = canvas.getPointer(e.e);
+		var x = GridHelper.round(pointer.x-25);
+        var y = GridHelper.round(pointer.y-25);
 
-        if (x != lastX || y != lastY) {
-            var color = model.canAdd(x,y) ? 'green' : 'red';
+        if (x != this.lastPos.x || y != this.lastPos.y) {
+            this.lastPos = {x:x, y:y};
+			var color = model.canAdd(x,y) ? 'green' : 'red';
             currentObject.setColor(color);
-            currentObject.set('left',GridHelper.round(e.e.clientX-25));
-            currentObject.set('top', GridHelper.round(e.e.clientY-25));
+            currentObject.set('left',x);
+            currentObject.set('top', y);
             currentObject.setCoords();
             canvas.renderAll();
         }

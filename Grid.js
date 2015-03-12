@@ -7,16 +7,18 @@ var GridHelper = new function () {
 	this.round = function (number) {return Math.round(number/this.size) * this.size;};
 };
 
-var GridDrawer = function (c) {
-	//this.c = c;
-	//this.init = function (c) {this.c = c;}
-	this.draw = function() {
-		var viewport = c.viewport;
-		var zoom = viewport.zoom;
-		var context = c.getContext("2d");
+var GridDrawer = function (canvas) {
+	this.init = function () {
+		App.events['renderBackground'].subscribe(this.draw);
+	};
 
-		var clientRect = new Rectangle(-viewport.translate().x,  -viewport.translate().y, c.getWidth() / zoom, c.getHeight() / zoom);
-		c.beginDraw(context);
+	this.draw = function() {
+		var viewport = canvas.viewport;
+		var zoom = viewport.zoom;
+		var context = canvas.getContext("2d");
+
+		var clientRect = new Rectangle(-viewport.translate().x,  -viewport.translate().y, canvas.getWidth() / zoom, canvas.getHeight() / zoom);
+		canvas.beginDraw(context);
 		for (var x = GridHelper.round(clientRect.left); x < clientRect.right; x += GridHelper.size) {
 			context.moveTo(x, clientRect.top);
 			context.lineTo(x, clientRect.bottom);
@@ -29,6 +31,6 @@ var GridDrawer = function (c) {
 
 		context.strokeStyle = "#ddd";
 		context.stroke();
-		c.endDraw(context);
+		canvas.endDraw(context);
 	}
 };

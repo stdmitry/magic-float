@@ -8,6 +8,10 @@ var StorageMan = new function () {
 
 	this.data = {};
 
+	this.init = function () {
+		bindEvents();
+	};
+
 	this.load = function () {
 		this.data = $.localStorage.get('data') || {};
         if (this.data.items)
@@ -27,5 +31,15 @@ var StorageMan = new function () {
 	this.addItem = function (item) {
 		this.data.items = this.data.items|| [];
 		this.data.items.push(item);
+	};
+
+
+	this.onResetItems = function ()	{
+		console.log('StorageMan:onResetItems');
+
+	};
+
+	function bindEvents() {
+		App.events['resetItems'].subscribe(StorageMan.onResetItems);
 	}
 };

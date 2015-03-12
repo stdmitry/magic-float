@@ -12,13 +12,14 @@ var The2DController = function (canvas) {
     this.cursorDrawer = new CursorDrawer(canvas, this.model);
 
 	this.init = function() {
+		ctrl.bindEvents();
+		ctrl.gridDrawer.init();
         ctrl.itemDrawer.drawAll(StorageMan.getItems());
         ctrl.model.init(StorageMan.getItems());
     };
 
     this.onMouseDown = function (e) {
-		addItem(GridHelper.round(e.e.clientX-25), GridHelper.round(e.e.clientY-25));
-
+		addItem(this.cursorDrawer.lastPos);
     };
 
     this.onMouseMove = function (e) {
@@ -29,11 +30,15 @@ var The2DController = function (canvas) {
 		this.gridDrawer.draw();
 	};
 
-	function addItem(x, y) {
-		var item = new Item(x,y, currentType);
+	function addItem(pos) {
+		var item = new Item(pos.x,pos.y, currentType);
 		ctrl.itemDrawer.draw(item);
-		Model.addItem(item);
+		ctrl.model.addItem(item);
         StorageMan.addItem(item);
 		StorageMan.save();
+	}
+
+	function bindEvents() {
+
 	}
 };
