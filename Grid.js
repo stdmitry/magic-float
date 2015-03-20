@@ -25,9 +25,10 @@ GridHelper.get3DCoords = function (pos) {
 	var coords = this.getCoords(pos);
 	var kx = 0.7;
 	var ky = 0.345;
+	var kz = 0.7;
 	return {
 		x: 50 + coords.x * kx + coords.y * kx,
-		y: 50 - coords.x * ky + coords.y * ky + coords.z * this.size,
+		y: 50 - coords.x * ky + coords.y * ky - coords.z * this.size * kz,
 		z: -coords.x * ky + coords.y * ky + coords.z * (this.size + 500)
 	} ;
 };
