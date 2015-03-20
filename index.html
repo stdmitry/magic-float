@@ -18,8 +18,23 @@
 <div class="canvas-container">
     <input type="button" class="reset-items" value="Reset">
     <input type="file" id="file" name="file"/>
-    Уровень:  <select name="level"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>
-    Тип:  <select name="level"><option value="block">block</option><option value="block2x">block2x</option><option value="block2x90">block2x90</option></select>
+    Уровень:
+    <select name="level" class="level-select">
+        <option value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+    </select>
+    Тип:
+    <select name="type" class="type-select">
+        <option value="block">block</option>
+        <option value="block2x">block2x</option>
+        <option value="block2x90">block2x90</option>
+    </select>
+    Режим:
+    <select name="type" class="mode-select">
+        <option value="2D">2D</option>
+        <option value="3D">3D</option>
+    </select>
     <canvas id="myCanvas" width="500" height="500" style="border:1px solid #000000;"></canvas>
 </div>
 
@@ -28,6 +43,7 @@
 <script src="Item.js" type="text/javascript"></script>
 <script src="Model.js" type="text/javascript"></script>
 <script src="Drawer.js" type="text/javascript"></script>
+<script src="Drawer3D.js" type="text/javascript"></script>
 <script src="CursorDrawer.js" type="text/javascript"></script>
 <script src="Grid.js" type="text/javascript"></script>
 <script src="StorageMan.js" type="text/javascript"></script>

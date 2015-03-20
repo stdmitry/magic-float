@@ -3,42 +3,114 @@
  */
 var The2DController = function (canvas) {
 	var currentType = 'block';
-	//var objects = StorageMan.getObjects();
+	var currentLevel = 1;
+	var currentMode = '2D';
+//	var currentMode = '3D';
 	var ctrl = this;
+
 	this.canvas = canvas;
 	this.gridDrawer = new GridDrawer(canvas);
-    this.itemDrawer = new Drawer(canvas);
+    this.itemDrawer = null
     this.model = new Model();
-    this.cursorDrawer = new CursorDrawer(canvas, this.model);
+    this.cursorDrawer = new CursorDrawer(canvas,this);
 
 	this.init = function() {
-		ctrl.bindEvents();
+		bindEvents();
+		ctrl.itemDrawer = createDrawer();
+
+		ctrl.cursorDrawer.init();
 		ctrl.gridDrawer.init();
-        ctrl.itemDrawer.drawAll(StorageMan.getItems());
-        ctrl.model.init(StorageMan.getItems());
-    };
+        ctrl.model.init();
+
+		StorageMan.init();
+		StorageMan.load();
+	};
 
     this.onMouseDown = function (e) {
-		addItem(this.cursorDrawer.lastPos);
+		var pos = ctrl.cursorDrawer.lastPos;
+		if (ctrl.model.canAdd(pos.x, pos.y, currentType))
+			addItem(ctrl.cursorDrawer.lastPos);
     };
 
     this.onMouseMove = function (e) {
-        ctrl.cursorDrawer.onMouseMove(e);
+		var i = 0;
     };
 
 	this.onRenderBackground = function (e) {
-		this.gridDrawer.draw();
+		if (currentMode == '2D')
+			ctrl.gridDrawer.draw();
+	};
+
+	this.getLevel = function () {
+		return currentLevel;
+	};
+
+	this.getType = function () {
+		return currentType;
 	};
 
 	function addItem(pos) {
-		var item = new Item(pos.x,pos.y, currentType);
-		ctrl.itemDrawer.draw(item);
-		ctrl.model.addItem(item);
-        StorageMan.addItem(item);
-		StorageMan.save();
+		var item = Item.create({pos:pos, type:currentType});
+		StorageMan.addItem(item);
+	}
+
+	this.onChangeItems = function () {
+		ctrl.invalidate();
+	};
+
+	this.onChangeLevel = function (level) {
+		ctrl.invalidate();
+	};
+
+	this.invalidate = function () {
+		ctrl.itemDrawer.invalidate();
+	};
+
+	this.onChangeMode = function () {
+		ctrl.itemDrawer = createDrawer();
+		ctrl.invalidate();
+	};
+
+	function createDrawer () {
+		return  currentMode == '2D'
+				? new Drawer(canvas, ctrl)
+				: new Drawer3D(canvas, ctrl);
 	}
 
 	function bindEvents() {
+		App.subscribe('mouseMove', ctrl.onMouseMove);
+		App.subscribe('mouseDown', ctrl.onMouseDown);
+
+		App.subscribe('changeItems', ctrl.onChangeItems);
+		App.subscribe('changeLevel', ctrl.onChangeLevel);
+		App.subscribe('renderBackground',ctrl.onRenderBackground);
+
+		$(document).on('click', '.reset-items', function (e) {
+			e.preventDefault();
+			App.fire('resetItems');
+			//StorageMan.save()
+		});
+
+		$(document).on('mousewheel', function(event) {
+			canvas.setZoom(canvas.getZoom()*(1 - 0.05*event.deltaY));
+		});
+
+		$(document).on('change', '.level-select', function () {
+			currentLevel = parseInt($('.level-select').val());
+			App.fire('changeLevel', currentLevel);
+		});
+
+		$(document).on('change', '.type-select', function () {
+			currentType = $('.type-select').val();
+			//App.fire('changeType', type);
+		});
+
+		$(document).on('change', '.mode-select', function () {
+			currentMode = $('.mode-select').val();
+			ctrl.onChangeMode();
+			//App.fire('changeType', type);
+		});
 
 	}
+
 };

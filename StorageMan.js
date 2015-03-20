@@ -6,18 +6,22 @@ var StorageMan = new function () {
         return arguments.callee._singletonInstance;
     arguments.callee._singletonInstance = this;
 
+	var storage = this;
 	this.data = {};
+
 
 	this.init = function () {
 		bindEvents();
 	};
 
 	this.load = function () {
-		this.data = $.localStorage.get('data') || {};
-        if (this.data.items)
-            this.data.items.forEach(function (el, index, array) {
+		storage.data = $.localStorage.get('data') || {};
+        if (storage.data.items)
+			storage.data.items.forEach(function (el, index, array) {
                 array[index] = Item.create(el);
             });
+
+		App.fire('changeItems');
 	};
 
 	this.save = function () {
@@ -25,21 +29,30 @@ var StorageMan = new function () {
 	};
 
 	this.getItems = function () {
-		return this.data.items || [];
+		return storage.data.items || [];
 	};
 
 	this.addItem = function (item) {
-		this.data.items = this.data.items|| [];
-		this.data.items.push(item);
+		storage.data.items = this.data.items|| [];
+		storage.data.items.push(item);
+		App.fire('changeItems');
 	};
 
 
 	this.onResetItems = function ()	{
 		console.log('StorageMan:onResetItems');
+		storage.data.items = [];
+		App.fire('changeItems');
+	};
 
+	this.onChangeItems = function () {
+		storage.save();
 	};
 
 	function bindEvents() {
-		App.events['resetItems'].subscribe(StorageMan.onResetItems);
+		App.subscribe('resetItems',StorageMan.onResetItems);
+		App.subscribe('changeItems',StorageMan.onChangeItems);
 	}
+
+	return this;
 };

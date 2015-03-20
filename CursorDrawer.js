@@ -1,43 +1,57 @@
 /**
  * Created by dmitry on 10.03.15.
  */
-var CursorDrawer = function(canvas, model) {
+var CursorDrawer = function(canvas, ctrl) {
     var currentObject = null;
-    this.lastPos = {x:null, y:null};
-	this.lastY = null;
+    var that = this;
+	this.lastPos = new Pos({x:null, y:null, z:null});
+	this.init = function () {
+		bindEvents();
+	};
 
     this.onMouseMove = function (e) {
-        if (!currentObject)
-            currentObject = createCursor(123);
+		var pointer = canvas.getPointer(e.e);
+		var pos = new Pos(GridHelper.getPos(pointer),ctrl.getLevel());
+        if (!that.lastPos.equals(pos)) {
+            if (currentObject)
+				currentObject.remove();
 
-        var pointer = canvas.getPointer(e.e);
-		var x = GridHelper.round(pointer.x-25);
-        var y = GridHelper.round(pointer.y-25);
-
-        if (x != this.lastPos.x || y != this.lastPos.y) {
-            this.lastPos = {x:x, y:y};
-			var color = model.canAdd(x,y) ? 'green' : 'red';
-            currentObject.setColor(color);
-            currentObject.set('left',x);
-            currentObject.set('top', y);
-            currentObject.setCoords();
+			that.lastPos = pos;
+			var color = ctrl.model.canAdd(pos, ctrl.getType()) ? 'green' : 'red';
+			currentObject = createCursor(pos, color, ctrl.getType());
             canvas.renderAll();
         }
     };
 
-    function createCursor(type) {
-        var obj = new fabric.Rect({
-            id: 'cursorObj',
-            left: 0,
-            top: 0,
-            fill: 'green',
-            opacity: 1,
-            width: 50,
-            height: 50,
-            selectable:false,
-            zindex:9999
-        });
-        canvas.add(obj);
+    function createCursor(pos, color, type) {
+		var coords = GridHelper.getCoords(pos);
+        var size = itemSize(type);
+		var params = {
+			id: 'cursorObj',
+			left: coords.x,
+			top: coords.y,
+			fill: color,
+			opacity: 1,
+			selectable:false,
+			zindex:9999
+		};
+
+		var obj = new fabric.Rect($.extend(size, params));
+       	canvas.add(obj);
         return obj;
     }
+
+	function itemSize(type) {
+		switch(type) {
+			case 'block': return { width: 50, height: 50 };
+			case 'block2x': return { width: 100, height: 50 };
+			case 'block2x90': return { width: 50, height: 100 };
+		}
+		console.log('Unknown block type ' + type);
+		return { width: 50, height: 50 };
+	}
+
+	function bindEvents() {
+		App.subscribe('mouseMove', that.onMouseMove);
+	}
 };
