@@ -38,8 +38,8 @@ var Drawer = function (canvas, ctrl) {
             top: coords.y,
             fill: 'blue',
 			opacity: getOpacity(coords),
-            width: 50,
-            height: 50,
+            width: item.width(),
+            height: item.height(),
             selectable: false
         });
     }

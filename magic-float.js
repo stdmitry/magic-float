@@ -65,17 +65,5 @@ $(function() {
 		c.setZoom(c.getZoom()*(1 - 0.05*event.deltaY));
 	});
 
-	$(document).on('keydown', function(event) {
-		if (event.keyCode == 32) {
-			c.isGrabMode = true;
-			$(document.body).css( 'cursor', 'move' ); // todo: не работает
-		}
-	});
 
-	$(document).on('keyup', function(event) {
-		if (event.keyCode == 32) {
-			c.isGrabMode = false;
-			$(document.body).css( 'cursor', 'crosshair' );
-		}
-	});
 });

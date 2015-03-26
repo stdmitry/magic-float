@@ -92,7 +92,22 @@ var The2DController = function (canvas) {
 		});
 
 		$(document).on('mousewheel', function(event) {
-			canvas.setZoom(canvas.getZoom()*(1 - 0.05*event.deltaY));
+			canvas.setZoom(canvas.getZoom()*(1 + 0.05*event.deltaY));
+		});
+
+
+		$(document).on('keydown', function(event) {
+			if (event.keyCode == 32) {
+				canvas.isGrabMode = true;
+				$(document.body).css( 'cursor', 'move' ); // todo: не работает
+			}
+		});
+
+		$(document).on('keyup', function(event) {
+			if (event.keyCode == 32) {
+				canvas.isGrabMode = false;
+				$(document.body).css( 'cursor', 'crosshair' );
+			}
 		});
 
 		$(document).on('change', '.level-select', function () {
