@@ -3,9 +3,8 @@
  */
 var Model = function() {
     this.blockMap = {};
- 	this.mountMap = {};
     var model = this;
-
+	this.mount = new Mount();
 
 	this.init = function () {
         bindEvents();
@@ -13,6 +12,7 @@ var Model = function() {
 
 	this.onChangeItems = function () {
 		model.blockMap = {};
+		model.mount.clear();
 		StorageMan.getItems().forEach(function(el) {
 			model.addItem(el);
 		});
@@ -20,9 +20,9 @@ var Model = function() {
 
 	this.addItem = function(item) {
 		var places = item.getPlaces();
-		var mounts = item.getMounting();
+		var mount = item.getMounting();
 		places.forEach(function (el) { model.blockMap[el.uniqueId()] = item; } );
-    	mounts.forEach(function (el) { model.mountMap[el.pos.uniqueId()] |= el.type; }  );
+    	model.mount.addMount(mount);
 	};
 
     this.canAdd = function(pos, type) {
@@ -31,10 +31,9 @@ var Model = function() {
 		var places = test.getPlaces();
 		places.forEach(function (el) { result = result && !(model.blockMap[el.uniqueId()]); } );
 		if (result) {
-			var mounts = test.getMounting();
-			mounts.forEach(function (el) { result = result && !(model.mountMap[el.pos.uniqueId()] & el.type); } );
+			var mount = test.getMounting();
+			result = !model.mount.isIntersect(mount);
 		}
-
 
 		return result;
     };

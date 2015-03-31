@@ -38,24 +38,34 @@ Item.prototype.getPlaces = function() {
 
 Item.getSimpleMount = function (pos) {
 	return  [
-		{type:0x1, pos: new Pos({x:pos.x, y:pos.y, z:pos.z})},
-		{type:0x2, pos: new Pos({x:pos.x, y:pos.y + 1, z:pos.z})},
-		{type:0x4, pos: new Pos({x:pos.x + 1, y:pos.y + 1, z:pos.z})},
-		{type:0x8, pos: new Pos({x:pos.x + 1, y:pos.y, z:pos.z})}
+		{type:1, pos: new Pos({x:pos.x, y:pos.y, z:pos.z})},
+		{type:2, pos: new Pos({x:pos.x, y:pos.y + 1, z:pos.z})},
+		{type:3, pos: new Pos({x:pos.x + 1, y:pos.y + 1, z:pos.z})},
+		{type:4, pos: new Pos({x:pos.x + 1, y:pos.y, z:pos.z})}
 	];
 };
 
 Item.prototype.getMounting = function() {
+	var items = [];
 	if (this.type == 'block2x' || this.type == 'block2x90') {
-		var pos2 = new Pos(this.pos);
+		var pos = this.pos;
+		var pos2 = new Pos(pos);
 		this.type == 'block2x'
 			? (pos2.x = this.pos.x + 1)
 			: (pos2.y = this.pos.y + 1);
-		var mnt = Item.getSimpleMount(this.pos);
+		var mnt = Item.getSimpleMount(pos);
 		var mnt2 = Item.getSimpleMount(pos2);
-		return mnt.concat(mnt2);
-	}
-	return Item.getSimpleMount(this.pos);
+		var extra = [
+			{type:5, pos: new Pos({x:pos.x+1, y:pos.y+1, z:pos.z})},
+			{type:5, pos: new Pos({x:pos2.x, y:pos2.y, z:pos2.z})},
+		];
+		items = mnt.concat(mnt2.concat(extra));
+	} else
+		items = Item.getSimpleMount(this.pos);
+
+	var mount = new Mount();
+	items.forEach(function (el) { mount.add(el.pos, el.type)});
+	return mount;
 };
 
 Item.prototype.width = function () {
