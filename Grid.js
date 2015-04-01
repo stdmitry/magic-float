@@ -40,6 +40,7 @@ var GridDrawer = function (canvas) {
 	};
 
 	this.draw = function() {
+		return;
 		var viewport = canvas.viewport;
 		var zoom = viewport.zoom;
 		var context = canvas.getContext("2d");

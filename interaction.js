@@ -5177,8 +5177,10 @@ if (typeof console !== 'undefined') {
         'class': this.containerClass
       });
       fabric.util.setStyle(this.wrapperEl, {
-        width: this.getWidth() + 'px',
-        height: this.getHeight() + 'px',
+        //width: this.getWidth() + 'px',
+        //height: this.getHeight() + 'px',
+		width: this.getWidth() + 'px',
+		height: this.getHeight() + 'px',
         position: 'relative'
       });
       fabric.util.makeElementUnselectable(this.wrapperEl);

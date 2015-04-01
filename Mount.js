@@ -12,7 +12,7 @@ Mount.getTypeFlag = function (type) {
 Mount.prototype.add = function (pos, type) {
 	var self = this;
 	if (Array.isArray(type)) {
-		types.forEach(function(el) {
+		type.forEach(function(el) {
 			self.add(pos, el);
 		});
 	} else {
@@ -27,7 +27,7 @@ Mount.prototype.add = function (pos, type) {
 
 Mount.prototype.addMount = function (mnt) {
 	var self = this;
-	$.each(mnt.map, function (el) {
+	$.each(mnt.map, function (i, el) {
 		self.add(el.pos, el.types);
 	});
 };
@@ -35,7 +35,7 @@ Mount.prototype.addMount = function (mnt) {
 Mount.prototype.isIntersect = function (mnt) {
 	var self = this;
 	var result = false;
-	$.each(mnt.map, function (el) {
+	$.each(mnt.map, function (i, el) {
 		if(self.map[el.pos.uniqueId()]) {
 			result = result || (self.map[el.pos.uniqueId()].flags & el.flags);
 		}

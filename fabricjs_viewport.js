@@ -269,10 +269,11 @@
 
 
 		CanvasWithViewport.prototype._renderBackground = function (ctx) {
+			var res = CanvasWithViewport.__super__._renderBackground.call(this, ctx);
 			if (this.onRenderBackground) {
 				this.onRenderBackground(ctx);
 			}
-			return CanvasWithViewport.__super__._renderBackground.call(this, arguments);
+			return res;
 		};
 
 		return CanvasWithViewport;
