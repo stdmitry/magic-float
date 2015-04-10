@@ -4,40 +4,36 @@
 var The2DController = function (canvas) {
 	var currentType = 'sb_105';
 	var currentLevel = 1;
-//	var currentMode = '2D';
-	var currentMode = '3D';
+	var currentMode = '2D';
+	//var currentMode = '3D';
 	var ctrl = this;
 
 	this.canvas = canvas;
 	this.gridDrawer = new GridDrawer(canvas);
-    this.itemDrawer = null
     this.model = new Model();
-    this.cursorDrawer = new CursorDrawer(canvas,this);
+	this.itemDrawer = null
+    this.tool = null ;
 
 	this.init = function() {
 		bindEvents();
 		this.onChangeMode();
-		ctrl.cursorDrawer.init();
 		ctrl.gridDrawer.init();
         ctrl.model.init();
 
 		StorageMan.init();
 		StorageMan.load();
 
-		canvas.setZoom(canvas.getZoom()*2);
+		//canvas.setZoom(canvas.getZoom()*2);
 	};
 
     this.onMouseDown = function (e) {
-		if (currentMode == '3D')
-			return;
-
-		var pos = ctrl.cursorDrawer.lastPos;
-		if (ctrl.model.canAdd(pos.x, pos.y, currentType))
-			addItem(ctrl.cursorDrawer.lastPos);
+		if (ctrl.tool)
+			ctrl.tool.onMouseDown(e);
     };
 
     this.onMouseMove = function (e) {
-		var i = 0;
+		if(ctrl.tool && ctrl.tool.onMouseMove)
+			ctrl.tool.onMouseMove(e);
     };
 
 	this.onRenderBackground = function (e) {
@@ -53,10 +49,21 @@ var The2DController = function (canvas) {
 		return currentType;
 	};
 
-	function addItem(pos) {
+	this.setType = function(type) {
+		currentType = type;
+		if (ctrl.tool && ctrl.tool.setType)
+			ctrl.tool.setType(type); // возможно, правильней было бы создавать новый тул
+	};
+
+	this.addItem = function(pos) {
 		var item = Item.create({pos:pos, type:currentType});
 		StorageMan.addItem(item);
-	}
+	};
+
+	this.deleteItem = function (pos) {
+		var item = ctrl.model.getItem(pos);
+		StorageMan.deleteItem(item);
+	};
 
 	this.onChangeItems = function () {
 		ctrl.invalidate();
@@ -72,20 +79,36 @@ var The2DController = function (canvas) {
 		ctrl.invalidate();
 	};
 
+
 	this.invalidate = function () {
 		ctrl.itemDrawer.invalidate();
 	};
 
 	this.onChangeMode = function () {
+		ctrl.tool = createTool();
 		ctrl.itemDrawer = createDrawer();
-		ctrl.cursorDrawer.setActive(currentMode == '2D');
 		ctrl.invalidate();
+	};
+
+	this.selectTool = function (tool, params) {
+		switch(tool) {
+			case 'ponton':
+				ctrl.tool = new PontonTool(canvas, ctrl, params);
+				return;
+			case 'eraser':
+				ctrl.tool = new EraserTool(canvas, ctrl, params);
+		}
 	};
 
 	function createDrawer () {
 		return  currentMode == '2D'
 				? new Drawer(canvas, ctrl)
 				: new Drawer3D(canvas, ctrl);
+	}
+
+	function createTool () {
+		return null;
+		return currentMode == '2D' ? ctrl.tool : null;
 	}
 
 	function bindEvents() {
@@ -122,11 +145,15 @@ var The2DController = function (canvas) {
 			App.fire('changeLevel', currentLevel);
 		});
 
-		$(document).on('click', '.magicfloat-element-type a', function () {
+		$(document).on('click', '.eraser-tool', function () {
+			ctrl.selectTool('eraser', $(this).data());
+		});
+
+
+		$(document).on('click', '.magicfloat-element-type a.tool', function () {
 			$('.magicfloat-element-type li').removeClass('active');
 			$(this).parent().addClass('active');
-			currentType = $(this).parent().data('type');
-			//App.fire('changeType');
+			ctrl.selectTool('ponton', $(this).data());
 		});
 
 		$(document).on('click', '.magicfloat-view-mode .btn.off', function () {
@@ -154,6 +181,25 @@ var The2DController = function (canvas) {
 			$.ajax({url:'/site/save', data: JSON.stringify(StorageMan.data), method:'POST', success:function(response) {
 
 			}});
+		});
+
+		$(document).on('click', '.box-products .btn', function (e) {
+			e.preventDefault();
+			var pushed = $(this).hasClass('pushed');
+			$(this).parent().find('.btn').removeClass('pushed');
+			if (!pushed)
+				$(this).addClass('pushed');
+
+			$('.pontoon-sidebar').each(function (){
+				var bar = $(this).data('bar');
+				var visible = $('.box-products .btn[data-bar='+bar+']').hasClass('pushed');
+				visible ? $(this).show() : $(this).hide();
+			});
+		});
+
+		$(document).on('click', '.pontoon-zoomer a', function(event) {
+			var delta = $(this).hasClass('plus') ? 3 : -3 ;
+			canvas.setZoom(canvas.getZoom()*(1 + 0.05*delta));
 		});
 
 	}

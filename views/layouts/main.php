@@ -81,7 +81,7 @@ AppAsset::register($this);
 <script src="/js/Model.js" type="text/javascript"></script>
 <script src="/js/Drawer.js" type="text/javascript"></script>
 <script src="/js/Drawer3D.js" type="text/javascript"></script>
-<script src="/js/CursorDrawer.js" type="text/javascript"></script>
+<script src="/js/Tools.js" type="text/javascript"></script>
 <script src="/js/Grid.js" type="text/javascript"></script>
 <script src="/js/StorageMan.js" type="text/javascript"></script>
 <script src="/js/Controller.js" type="text/javascript"></script>

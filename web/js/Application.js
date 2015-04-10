@@ -23,7 +23,7 @@ var Application = function () {
 	this.controller = null;
 	this.canvas = null;
 	this.run = function () {
-		app.canvas = new fabric.CanvasWithViewport("myCanvas", {selection:false, backgroundColor:'#0d5e95' });
+		app.canvas = new fabric.CanvasWithViewport("myCanvas", {selection:false});
 		app.canvas.setHeight($('.pontoon-canvas').innerHeight());
 		app.canvas.setWidth($('.pontoon-canvas').innerWidth());
 		this.setupEventListen();

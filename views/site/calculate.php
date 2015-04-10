@@ -5,7 +5,7 @@
 			<input type="text" placeholder="Ваше имя" />
 			<div class="error">Укажите Ваше имя.</div>
 		</div>
-		<div class="row partners-only">
+		<div class="row partners-only" style="display:none">
 			<input type="text" placeholder="Код" />
 		</div>
 		<div class="hint">Только для дилеров</div>

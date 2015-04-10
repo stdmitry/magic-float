@@ -43,7 +43,7 @@ var CursorDrawer = function(canvas, ctrl) {
 			left: coords.x,
 			top: coords.y,
 			fill: color,
-			opacity: 1,
+			opacity: 0.5,
 			selectable:false,
 			zindex:9999
 		};

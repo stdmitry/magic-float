@@ -44,6 +44,12 @@ var StorageMan = new function () {
 		storage.save();
 	};
 
+	this.deleteItem = function (item) {
+		var index = storage.data.items.indexOf(item);
+		storage.data.items.splice(index, 1);
+		App.fire('changeItems');
+	};
+
 
 	this.onResetItems = function ()	{
 		console.log('StorageMan:onResetItems');

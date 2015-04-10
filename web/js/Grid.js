@@ -59,24 +59,65 @@ var GridDrawer = function (canvas) {
 		//App.events['renderBackground'].subscribe(this.draw);
 	};
 
+
+	var bgImg = new Image();
+	var bgLoaded = false;
+	bgImg.onload = function () {
+		bgLoaded = true;
+		canvas.renderAll();
+	};
+	bgImg.src = "/img/bg.jpg";
+
+	var logoImg = new Image();
+	var logoLoaded = false;
+	logoImg.onload = function () {
+		logoLoaded = true;
+		canvas.renderAll();
+	};
+	logoImg.src = "/img/logo-mf.png";
+
+
 	this.draw = function() {
 		//return;
 		var viewport = canvas.viewport;
 		var zoom = viewport.zoom;
 		var context = canvas.getContext("2d");
 
+
 		var clientRect = new Rectangle(-viewport.translate().x,  -viewport.translate().y, canvas.getWidth() / zoom, canvas.getHeight() / zoom);
-		canvas.beginDraw(context);
-		for (var x = GridHelper.round(clientRect.left); x < clientRect.right; x += GridHelper.size) {
-			context.dashedLine(x, clientRect.top, x, clientRect.bottom,1);
+		if (bgLoaded) {
+			var pattern = context.createPattern(bgImg, 'repeat');
+			context.rect(0, 0, canvas.width, canvas.height);
+			context.fillStyle = pattern;
+			context.fill();
 		}
 
-		for (var y = GridHelper.round(clientRect.top); y < clientRect.bottom; y += GridHelper.size) {
-			context.dashedLine(clientRect.left, y, clientRect.right, y,1);
+
+		canvas.beginDraw(context);
+		/*
+		if (zoom > 0.5) {
+			context.setLineDash([1, 3]);
+			for (var x = GridHelper.round(clientRect.left); x < clientRect.right; x += GridHelper.size) {
+				context.moveTo(x, clientRect.top);
+				context.lineTo(x, clientRect.bottom);
+				//context.dashedLine(x, clientRect.top, x, clientRect.bottom,1);
+			}
+
+			for (var y = GridHelper.round(clientRect.top); y < clientRect.bottom; y += GridHelper.size) {
+				context.moveTo(clientRect.left, y);
+				context.lineTo(clientRect.right, y);
+				//context.dashedLine(clientRect.left, y, clientRect.right, y,1);
+			}
 		}
+		*/
 
 		context.strokeStyle = "#ddd";
 		context.stroke();
+
 		canvas.endDraw(context);
+
+		if (logoLoaded) {
+			context.drawImage(logoImg, 770, 20);
+		}
 	}
 };

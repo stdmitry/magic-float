@@ -28,6 +28,11 @@ var Model = function() {
     	model.mount.addMount(mount);
 	};
 
+	this.getItem = function (pos) {
+		var test = model.blockMap[pos.uniqueId()];
+		return test ? test : false;
+	};
+
     this.canAdd = function(pos, type) {
 		var test = Item.create({pos:pos, type:type});
         var result = true;
