@@ -2,7 +2,6 @@
  * Created by dmitry on 3/6/15.
  */
 var The2DController = function (canvas) {
-	var currentType = 'sb_105';
 	var currentLevel = 1;
 	var currentMode = '2D';
 	//var currentMode = '3D';
@@ -55,8 +54,7 @@ var The2DController = function (canvas) {
 			ctrl.tool.setType(type); // возможно, правильней было бы создавать новый тул
 	};
 
-	this.addItem = function(pos) {
-		var item = Item.create({pos:pos, type:currentType});
+	this.addItem = function(item) {
 		StorageMan.addItem(item);
 	};
 

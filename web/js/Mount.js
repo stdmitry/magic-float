@@ -14,6 +14,22 @@ Mount.count = function (el) {
 	return types.length - (types.indexOf(5) == -1 ? 0 : 1);
 };
 
+Mount.types = function (el) {
+    var types = el.types;
+    var index = types.indexOf(5);
+    if (index != -1)
+        types.splice(index, 1);
+    return types.sort();
+};
+
+Mount.shimsCnt = function (el) {
+    var types = Mount.types(el);
+    var max = Math.max.apply(null, types);
+    var min = Math.min.apply(null, types);
+    return max - min - types.length + 1;
+};
+
+
 Mount.prototype.add = function (pos, type) {
 	var self = this;
 	if (Array.isArray(type)) {

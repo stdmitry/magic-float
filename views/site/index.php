@@ -1,6 +1,6 @@
 <?php
 /* @var $this yii\web\View */
-$this->title = 'My Yii Application';
+$this->title = 'MagicFloat.ru';
 ?>
 <div class="pontoon-editer">
 	<div class="pontoon-toolbar">
@@ -17,12 +17,12 @@ $this->title = 'My Yii Application';
 			<label>Вид</label>
 
 			<div class="btn-switcher magicfloat-view-mode">
-				<a href="#" class="btn off" data-value="2D">2D</a>
-				<a href="#" class="btn on" data-value="3D">3D</a>
+				<a href="#" class="btn on" data-value="2D">2D</a>
+				<a href="#" class="btn off" data-value="3D">3D</a>
 			</div>
 
-			<div class='btn'>Вход для дилеров</div>
-			<!--
+		    <a href="#" class="btn">Вход для дилеров</a>
+        	<!--
 			<div class="select" >
 				<div class="fake-select">
 					<span>1-й уровень блоков</span>

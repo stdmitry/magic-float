@@ -54,7 +54,7 @@ var Model = function() {
 				model.mountEls.push({pos:el.pos, type:'sa_202'});
 			else if (cnt > 1) {
 				model.mountEls.push({pos:el.pos, type:'sa_402'});
-				for (var i = 0; i < 4 - cnt; ++i)
+				for (var i = 0; i < Mount.shimsCnt(el); ++i)
 					model.mountEls.push({pos:el.pos, type:'sa_401'});
 			}
 		});

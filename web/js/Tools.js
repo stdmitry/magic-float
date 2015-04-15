@@ -16,7 +16,7 @@ var PontonTool = function(canvas, ctrl, params) {
 	this.onMouseDown = function (e) {
 		var pos = tool.pos;
 		if (model.canAdd(pos.x, pos.y, tool.type))
-			ctrl.addItem(pos);
+			ctrl.addItem(Item.create({pos:pos, type:tool.type}));
 	};
 
 	this.onMouseMove = function (e) {
