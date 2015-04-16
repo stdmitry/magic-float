@@ -21,7 +21,13 @@ var StorageMan = new function () {
                 array[index] = Item.create(el);
             });
 
-		App.fire('changeItems');
+        if (storage.data.mounts)
+            storage.data.mounts.forEach(function (el, index, array) {
+                array[index] = Item.create(el);
+            });
+
+
+        App.fire('changeItems');
 	};
 
 	this.save = function () {
@@ -36,6 +42,22 @@ var StorageMan = new function () {
 	this.getItems = function () {
 		return storage.data.items || [];
 	};
+
+    this.getMounts = function () {
+        return storage.data.mounts || [];
+    };
+
+    this.setMounts = function (mounts) {
+        storage.data.mounts = mounts;
+        App.fire('changeItems');
+    };
+
+    this.getAll = function () {
+        var items = storage.getItems();
+        var mounts = storage.getMounts();
+
+        return items.concat(mounts);
+    };
 
 	this.addItem = function (item) {
 		storage.data.items = this.data.items|| [];

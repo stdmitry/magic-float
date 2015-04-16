@@ -168,7 +168,9 @@ var The2DController = function (canvas) {
 
 		$(document).on('click', '.magicfloat-calculate', function (e) {
 			e.preventDefault();
-			ctrl.model.relcalc();
+			ctrl.model.recalc();
+            StorageMan.setMounts(ctrl.model.mountEls);
+
 			Popup.show('/site/calculate', {data:ctrl.model.itemCnt, callback: function(popup){
 
 			}});

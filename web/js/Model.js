@@ -46,16 +46,16 @@ var Model = function() {
 		return result;
     };
 
-	this.relcalc = function () {
+	this.recalc = function () {
 		model.mountEls = [];
 		model.mount.forEach(function (el) {
 			var cnt = Mount.count(el);
-			if (cnt == 4)
-				model.mountEls.push({pos:el.pos, type:'sa_202'});
-			else if (cnt > 1) {
-				model.mountEls.push({pos:el.pos, type:'sa_402'});
+			if (cnt == 4) {
+				model.mountEls.push(Item.create({pos:new Pos(el.pos), type:'sa_202'}));
+            } else if (cnt > 1) {
+				model.mountEls.push(Item.create({pos:new Pos(el.pos), type:'sa_402'}));
 				for (var i = 0; i < Mount.shimsCnt(el); ++i)
-					model.mountEls.push({pos:el.pos, type:'sa_401'});
+					model.mountEls.push(Item.create({pos:el.pos, type:'sa_401'}));
 			}
 		});
 
