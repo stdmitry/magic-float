@@ -2,11 +2,13 @@
 
 namespace app\controllers;
 
+use app\models\Order;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
+use app\models\OrderForm;
 use app\models\ContactForm;
 
 class SiteController extends Controller
@@ -62,7 +64,32 @@ class SiteController extends Controller
 
 	public function actionCalculate() {
 		$this->layout = 'popup';
-		return $this->render('calculate', ['items' => $_POST]);
+		$model = new OrderForm();
+		$model->data = $_POST['data'];
+		$model->count = $_POST['count'];
+
+		return $this->render('calculate', [
+			'model' => $model,
+		]);
+	}
+
+	public function actionOrder() {
+		$model = new OrderForm();
+		$model->load($_POST);
+		if ($model->validate() && $model->save()) {
+			Yii::$app->mailer->compose()
+				->setFrom('info@magicfloat.ru')
+				->setTo($model->contact)
+				->setSubject('MagicFloat: Заказ')
+				->setHtmlBody($this->renderPartial('/mail/order', ['order'=>$model->getOrder()]))
+				->send();
+		}
+
+		$this->layout = 'popup';
+		return $this->render('calculate', [
+			'model' => $model
+		]);
+
 	}
 
     public function actionLogin()

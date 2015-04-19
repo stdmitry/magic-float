@@ -335,31 +335,31 @@ button, input, textarea {-webkit-appearance:none; -moz-appearance:none; -webkit-
         .pontoon-overlay .pontoon-form .col-left,
         .pontoon-overlay .pontoon-form .col-right {width:225px; float:left;}
         .pontoon-overlay .pontoon-form .col-right {float:right;}
-        .pontoon-overlay .pontoon-form .row {position:relative; padding-bottom:15px;}
-            .pontoon-overlay .pontoon-form .row input {width:100%; font-size:13px; padding:0 10px; border:1px solid #fff; background:#2e87c3; color:#fff; width:100%; height:38px;}
-                .pontoon-overlay .pontoon-form .row input:focus {background:#fff; color:#4a4a4a;}
-        .pontoon-overlay .pontoon-form .row input::-webkit-input-placeholder {color:#fff; opacity:1; text-overflow:ellipsis;}
-        .pontoon-overlay .pontoon-form .row input::-moz-placeholder {color:#fff; opacity:1; text-overflow:ellipsis;}
-        .pontoon-overlay .pontoon-form .row input:-moz-placeholder {color:#fff; opacity:1; text-overflow:ellipsis;}
-        .pontoon-overlay .pontoon-form .row input:-ms-input-placeholder {color:#fff; opacity:1; -ms-filter:'alpha(opacity=100)'; text-overflow:ellipsis;}
-        .pontoon-overlay .pontoon-form .row.has-error input {border-color:#fba0b8; color:#fba0b8;}
-        .pontoon-overlay .pontoon-form .row.has-error input::-webkit-input-placeholder {color:#fba0b8;}
-        .pontoon-overlay .pontoon-form .row.has-error input::-moz-placeholder {color:#fba0b8;}
-        .pontoon-overlay .pontoon-form .row.has-error input:-moz-placeholder {color:#fba0b8;}
-        .pontoon-overlay .pontoon-form .row.has-error input:-ms-input-placeholder {color:#fba0b8;}
+        .pontoon-overlay .pontoon-form .form-group {position:relative; padding-bottom:15px;}
+            .pontoon-overlay .pontoon-form .form-group input {width:100%; font-size:13px; padding:0 10px; border:1px solid #fff; background:#2e87c3; color:#fff; width:100%; height:38px;}
+                .pontoon-overlay .pontoon-form .form-group input:focus {background:#fff; color:#4a4a4a;}
+        .pontoon-overlay .pontoon-form .form-group input::-webkit-input-placeholder {color:#fff; opacity:1; text-overflow:ellipsis;}
+        .pontoon-overlay .pontoon-form .form-group input::-moz-placeholder {color:#fff; opacity:1; text-overflow:ellipsis;}
+        .pontoon-overlay .pontoon-form .form-group input:-moz-placeholder {color:#fff; opacity:1; text-overflow:ellipsis;}
+        .pontoon-overlay .pontoon-form .form-group input:-ms-input-placeholder {color:#fff; opacity:1; -ms-filter:'alpha(opacity=100)'; text-overflow:ellipsis;}
+        .pontoon-overlay .pontoon-form .form-group.has-error input {border-color:#fba0b8; color:#fba0b8;}
+        .pontoon-overlay .pontoon-form .form-group.has-error input::-webkit-input-placeholder {color:#fba0b8;}
+        .pontoon-overlay .pontoon-form .form-group.has-error input::-moz-placeholder {color:#fba0b8;}
+        .pontoon-overlay .pontoon-form .form-group.has-error input:-moz-placeholder {color:#fba0b8;}
+        .pontoon-overlay .pontoon-form .form-group.has-error input:-ms-input-placeholder {color:#fba0b8;}
 
-        .pontoon-overlay .pontoon-form .row .error {display:none; color:#fba0b8; padding-top:5px;}
-        .pontoon-overlay .pontoon-form .row.has-error .error {display:block;}
+        .pontoon-overlay .pontoon-form .form-group .error {display:none; color:#fba0b8; padding-top:5px;}
+        .pontoon-overlay .pontoon-form .form-group.has-error .error {display:block;}
 
-        .pontoon-overlay .pontoon-form .row.partners-only input {border-color:#7db4db; color:#7db4db;}
-        .pontoon-overlay .pontoon-form .row.partners-only input::-webkit-input-placeholder {color:#7db4db;}
-        .pontoon-overlay .pontoon-form .row.partners-only input::-moz-placeholder {color:#7db4db;}
-        .pontoon-overlay .pontoon-form .row.partners-only input:-moz-placeholder {color:#7db4db;}
-        .pontoon-overlay .pontoon-form .row.partners-only input:-ms-input-placeholder {color:#7db4db;}
+        .pontoon-overlay .pontoon-form .form-group.partners-only input {border-color:#7db4db; color:#7db4db;}
+        .pontoon-overlay .pontoon-form .form-group.partners-only input::-webkit-input-placeholder {color:#7db4db;}
+        .pontoon-overlay .pontoon-form .form-group.partners-only input::-moz-placeholder {color:#7db4db;}
+        .pontoon-overlay .pontoon-form .form-group.partners-only input:-moz-placeholder {color:#7db4db;}
+        .pontoon-overlay .pontoon-form .form-group.partners-only input:-ms-input-placeholder {color:#7db4db;}
 
         .pontoon-overlay .pontoon-form .hint {color:#7db4db;}
 
-        .pontoon-form-feedback {color:#21c582; background:#fff; padding:15px; border-radius:10px; text-align:center; font-size:13px; line-height:15px; max-height:30px; overflow:hidden; position:absolute; bottom:5px; display:none;}
+        .pontoon-form-feedback {color:#21c582; background:#fff; padding:15px; border-radius:10px; text-align:center; font-size:13px; line-height:15px; max-height:30px; overflow:hidden; position:absolute; bottom:5px;}
             .pontoon-form-feedback a {color:#21c582; border-bottom:1px solid #21c582;}
             .pontoon-form-feedback a:hover {border-bottom:none !important;}
         .pontoon-form-feedback.fail {background:#fba0b8; color:#fff;}

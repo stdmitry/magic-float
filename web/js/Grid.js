@@ -33,7 +33,6 @@ GridHelper.get3DCoords = function (pos) {
 	} ;
 };
 
-
 CanvasRenderingContext2D.prototype.dashedLine = function (x1, y1, x2, y2, dashLen) {
 	if (dashLen == undefined) dashLen = 2;
 	this.moveTo(x1, y1);
@@ -77,15 +76,16 @@ var GridDrawer = function (canvas) {
 	logoImg.src = "/img/logo-mf.png";
 
 
-	this.draw = function() {
+	this.draw = function(mode) {
 		//return;
 		var viewport = canvas.viewport;
 		var zoom = viewport.zoom;
 		var context = canvas.getContext("2d");
+        context.clearRect ( 0 , 0 , canvas.width, canvas.height );
 
 
 		var clientRect = new Rectangle(-viewport.translate().x,  -viewport.translate().y, canvas.getWidth() / zoom, canvas.getHeight() / zoom);
-		if (bgLoaded) {
+        if (bgLoaded) {
 			var pattern = context.createPattern(bgImg, 'repeat');
 			context.rect(0, 0, canvas.width, canvas.height);
 			context.fillStyle = pattern;
@@ -93,10 +93,11 @@ var GridDrawer = function (canvas) {
 		}
 
 
-		canvas.beginDraw(context);
-		/*
-		if (zoom > 0.5) {
-			context.setLineDash([1, 3]);
+
+		if (mode == '2D' && zoom > 0.5) {
+            canvas.beginDraw(context);
+            context.beginPath();
+            context.setLineDash([1, 3]);
 			for (var x = GridHelper.round(clientRect.left); x < clientRect.right; x += GridHelper.size) {
 				context.moveTo(x, clientRect.top);
 				context.lineTo(x, clientRect.bottom);
@@ -108,13 +109,13 @@ var GridDrawer = function (canvas) {
 				context.lineTo(clientRect.right, y);
 				//context.dashedLine(clientRect.left, y, clientRect.right, y,1);
 			}
+            context.strokeStyle = "#ddd";
+            context.stroke();
+            canvas.endDraw(context);
 		}
-		*/
 
-		context.strokeStyle = "#ddd";
-		context.stroke();
 
-		canvas.endDraw(context);
+
 
 		if (logoLoaded) {
 			context.drawImage(logoImg, 770, 20);

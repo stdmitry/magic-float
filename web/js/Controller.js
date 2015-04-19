@@ -36,8 +36,8 @@ var The2DController = function (canvas) {
     };
 
 	this.onRenderBackground = function (e) {
-		if (currentMode == '2D')
-			ctrl.gridDrawer.draw();
+		//if (currentMode == '2D')
+			ctrl.gridDrawer.draw(currentMode );
 	};
 
 	this.getLevel = function () {
@@ -171,9 +171,24 @@ var The2DController = function (canvas) {
 			ctrl.model.recalc();
             StorageMan.setMounts(ctrl.model.mountEls);
 
-			Popup.show('/site/calculate', {data:ctrl.model.itemCnt, callback: function(popup){
+			Popup.show({
+				url: '/site/calculate',
+                data:{
+					count: JSON.stringify(ctrl.model.itemCnt),
+					data: JSON.stringify(StorageMan.data)},
+                callback: function(popup) {
+			    }
+            });
+		});
 
-			}});
+		$(document).on('click', '.magicfloat-send-order', function (e) {
+			e.preventDefault();
+
+			Popup.show({
+				parent: $(this).parents('.pontoon-overlay'),
+				url: '/site/order',
+				data: $(this).parents('form').serialize(),
+			});
 		});
 
 		$(document).on('click', '.magicfloat-save', function (e) {

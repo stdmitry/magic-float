@@ -49,7 +49,7 @@ var Drawer = function (canvas, ctrl) {
         });
         drawer.items = [];
         drawer.itemCnt = 0;
-		//canvas.clear();
+		canvas.clear();
 		drawer.drawAll(StorageMan.getAll());
 		canvas.renderAll();
 	};
